@@ -14,7 +14,8 @@ const getAllLogs = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, logs, "Daily Logs fetched successfully"));
 });
 
-const getLogByDate = asyncHandler(async (res, req) => {
+// FIXED: Swapped parameter order from (res, req) to (req, res)
+const getLogByDate = asyncHandler(async (req, res) => {
   const { date } = req.query;
   if (!date) {
     throw new ApiError(400, "Date is required");
