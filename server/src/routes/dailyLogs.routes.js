@@ -6,22 +6,23 @@ import {
   updateLog,
   deleteLog,
 } from "../controllers/dailylogs.controllers.js";
+import { verifyJWT } from "../middlewares/auth.middleware.js";
 
 const router = Router();
 
 // GET all logs
-router.get("/", getAllLogs);
+router.get("/",verifyJWT , getAllLogs);
 
 // GET log by date → /logs?date=YYYY-MM-DD
-router.get("/by-date", getLogByDate);
+router.get("/by-date",verifyJWT , getLogByDate);
 
 // CREATE new log
-router.post("/", createLog);
+router.post("/",verifyJWT , createLog);
 
 // UPDATE log by id
-router.put("/:id", updateLog);
+router.put("/:id",verifyJWT , updateLog);
 
 // DELETE log by id
-router.delete("/:id", deleteLog);
+router.delete("/:id",verifyJWT , deleteLog);
 
-export default router;
+export { router as logRoutes };
