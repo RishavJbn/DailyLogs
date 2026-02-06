@@ -10,7 +10,7 @@ router.post("/signup",registerUser);
 router.post("/refresh-token",refreshAcessToken);
 
 //protected routes via middleware
-router.post("/logout",logoutUser);
+router.post("/logout",verifyJWT, logoutUser);
 router.post("/me",verifyJWT,getCurrentUser);
 router.get("/change-password",verifyJWT,changePassword);
 
