@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import { setTheme } from "../utils/theme";
-import axios from "../api/axios";
+import { setTheme } from "../utils/theme.js";
+import { logoutUser } from "../api/userapi.js";
 import { useNavigate } from "react-router-dom";
 
-export default function Header({ isLoggedIn }) {
+export default function Header() {
   const [now, setNow] = useState(new Date());
   const navigate = useNavigate();
 
@@ -13,7 +13,7 @@ export default function Header({ isLoggedIn }) {
   }, []);
 
   const handleLogout = async () => {
-    await axios.post("/users/logout");
+    await logoutUser();
     navigate("/login");
   };
 
@@ -26,7 +26,7 @@ export default function Header({ isLoggedIn }) {
       </div>
 
       <div className="flex gap-4 items-center">
-        {isLoggedIn && <button onClick={handleLogout}>logout</button>}
+        <button onClick={handleLogout}>logout</button>
 
         <div className="flex gap-2 text-xs">
           <button onClick={() => setTheme("terminal")}>T</button>

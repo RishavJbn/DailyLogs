@@ -1,5 +1,5 @@
 import { useState } from "react";
-import axios from "../api/axios";
+import { loginUser } from "../api/userapi";
 import { useNavigate } from "react-router-dom";
 
 export default function Login() {
@@ -8,12 +8,8 @@ export default function Login() {
   const navigate = useNavigate();
 
   const handleLogin = async () => {
-    try {
-      await axios.post("/users/login", { email, password });
-      navigate("/");
-    } catch (err) {
-      console.log(err);
-    }
+    await loginUser({ email, password });
+    navigate("/");
   };
 
   return (

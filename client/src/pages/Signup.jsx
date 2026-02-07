@@ -1,5 +1,5 @@
 import { useState } from "react";
-import axios from "../api/axios";
+import { registerUser } from "../api/userapi";
 import { useNavigate } from "react-router-dom";
 
 export default function Signup() {
@@ -7,12 +7,8 @@ export default function Signup() {
   const navigate = useNavigate();
 
   const handleSignup = async () => {
-    try {
-      await axios.post("/users/register", form);
-      navigate("/login");
-    } catch (err) {
-      console.log(err);
-    }
+    await registerUser(form);
+    navigate("/login");
   };
 
   return (

@@ -1,22 +1,12 @@
-import { useEffect, useState } from "react";
-import axios from "../api/axios";
-
-export default function LogList() {
-  const [logs, setLogs] = useState([]);
-
-  useEffect(() => {
-    fetchLogs();
-  }, []);
-
-  const fetchLogs = async () => {
-    const res = await axios.get("/dailylog");
-    setLogs(res.data.data);
-  };
-
+export default function LogList({ logs, onSelect }) {
   return (
-    <div className="text-sm space-y-2">
-      {logs.map((log) => (
-        <div key={log._id} className="cursor-pointer hover:opacity-70">
+    <div className="space-y-2 text-sm">
+      {logs?.map((log) => (
+        <div
+          key={log._id}
+          className="cursor-pointer hover:opacity-70"
+          onClick={() => onSelect(log)}
+        >
           {log.date?.slice(0, 10)}
         </div>
       ))}
