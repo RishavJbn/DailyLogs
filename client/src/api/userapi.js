@@ -11,7 +11,7 @@ export const loginUser = async (data) => {
 };
 
 // SIGNUP
-export const signupUser = async (data) => {
+export const registerUser = async (data) => {
   const res = await axiosUsers.post("/signup", data);
   return res.data;
 };
@@ -37,5 +37,17 @@ export const changePassword = async (data) => {
 // REFRESH TOKEN
 export const refreshToken = async () => {
   const res = await axiosUsers.post("/refresh-token");
+  return res.data;
+};
+
+// REQUEST PASSWORD RESET
+export const requestPasswordReset = async (data) => {
+  const res = await axiosUsers.post("/forgot-password", data);
+  return res.data;
+};
+
+// RESET PASSWORD
+export const resetPassword = async (data) => {
+  const res = await axiosUsers.post("/reset-password", data);
   return res.data;
 };

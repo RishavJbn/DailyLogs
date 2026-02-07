@@ -3,6 +3,7 @@ import { ApiError } from "../utils/ApiError.js";
 import { User } from "../models/user.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import jwt from "jsonwebtoken";
+import crypto from "crypto";
 
 const options = {
   httpOnly: true,
@@ -31,8 +32,6 @@ const generateAccessandRefreshTokens = async (userId) => {
   }
 };
 
-
-
 const refreshAcessToken = asyncHandler(async (req, res) => {
   //isme hum cookies as rt nikalte hain
   //usko decode karte hain
@@ -40,8 +39,7 @@ const refreshAcessToken = asyncHandler(async (req, res) => {
   //compare karte hain incoming rt aur userid ka rt se db wala
   //phir rt aur at generate karte hain
   //iska main kab hai ki check karne rt ko aur iske baas new rt and at generate karwana
-  const incomingRefreshToken =
-    req.body.refreshToken || req.cookie.refreshToken;
+  const incomingRefreshToken = req.body.refreshToken || req.cookie.refreshToken;
 
   if (!incomingRefreshToken) {
     throw new ApiError(401, "unauthorized request ");
@@ -103,10 +101,6 @@ const registerUser = asyncHandler(async (req, res) => {
     throw new ApiError(409, "User with email or username already exists");
   }
   //console.log(req.files);
-
- 
-
-  
 
   const user = await User.create({
     //creating the data
@@ -265,7 +259,81 @@ const updateAccountDetails = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, user, "Account details updated successfully"));
 });
 
+const forgotPassword = asyncHandler(async (req, res) => {
+  const { email } = req.body;
 
+  if (!email) {
+    throw new ApiError(400, "Email is required");
+  }
+
+  const user = await User.findOne({ email });
+
+  if (!user) {
+    // For security, don't reveal if email exists
+    return res
+      .status(200)
+      .json(
+        new ApiResponse(
+          200,
+          {},
+          "If email exists, password reset link has been sent",
+        ),
+      );
+  }
+
+  // Generate reset token
+  const resetToken = crypto.randomBytes(32).toString("hex");
+
+  user.resetPasswordToken = crypto
+    .createHash("sha256")
+    .update(resetToken)
+    .digest("hex");
+
+  user.resetPasswordExpires = Date.now() + 3600000; // 1 hour
+
+  await user.save({ validateBeforeSave: false });
+
+  // In a real app, you'd send an email here
+  // For now, we'll just return the token (ONLY FOR DEVELOPMENT)
+  const resetUrl = `${process.env.CLIENT_URL || "http://localhost:5173"}/reset-password?token=${resetToken}`;
+
+  return res.status(200).json(
+    new ApiResponse(
+      200,
+      { resetUrl }, // Remove this in production, send via email instead
+      "Password reset link generated successfully",
+    ),
+  );
+});
+
+const resetPasswordWithToken = asyncHandler(async (req, res) => {
+  const { token, password } = req.body;
+
+  if (!token || !password) {
+    throw new ApiError(400, "Token and password are required");
+  }
+
+  const hashedToken = crypto.createHash("sha256").update(token).digest("hex");
+
+  const user = await User.findOne({
+    resetPasswordToken: hashedToken,
+    resetPasswordExpires: { $gt: Date.now() },
+  });
+
+  if (!user) {
+    throw new ApiError(400, "Invalid or expired reset token");
+  }
+
+  user.password = password;
+  user.resetPasswordToken = undefined;
+  user.resetPasswordExpires = undefined;
+
+  await user.save();
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, {}, "Password reset successfully"));
+});
 
 export {
   registerUser,
@@ -274,4 +342,6 @@ export {
   refreshAcessToken,
   getCurrentUser,
   changePassword,
+  forgotPassword,
+  resetPasswordWithToken,
 };

@@ -18,21 +18,17 @@ export default function Header() {
   };
 
   return (
-    <div className="app-box px-4 py-2 flex justify-between text-sm">
-      <div className="app-accent">daily-logs</div>
+    <div className="app-box px-6 py-3 flex justify-between items-center text-sm">
+      <div className="app-accent font-bold text-base">███ DAILY.LOGS.SYS</div>
 
-      <div className="opacity-70">
-        {now.toDateString()} · {now.toLocaleTimeString()}
+      <div className="app-text-dim text-xs">
+        [{now.toDateString()}] [{now.toLocaleTimeString()}]
       </div>
 
-      <div className="flex gap-4 items-center">
-        <button onClick={handleLogout}>logout</button>
-
-        <div className="flex gap-2 text-xs">
-          <button onClick={() => setTheme("terminal")}>T</button>
-          <button onClick={() => setTheme("blue")}>B</button>
-          <button onClick={() => setTheme("light")}>L</button>
-        </div>
+      <div className="flex gap-6 items-center">
+        <button onClick={handleLogout} className="terminal-link text-xs">
+          disconnect
+        </button>
       </div>
     </div>
   );

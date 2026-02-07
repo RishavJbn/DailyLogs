@@ -6,6 +6,6 @@ export const axiosLogs = axios.create({
 });
 
 export const axiosUsers = axios.create({
-  baseURL: "http://localhost:8000/api/v1/users",
+  baseURL: "http://localhost:8000/api/v1/user",
   withCredentials: true,
 });

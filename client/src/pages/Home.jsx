@@ -18,15 +18,16 @@ export default function Home() {
   };
 
   return (
-    <div className="app-bg app-text h-screen flex flex-col">
+    <div className="app-bg app-text h-screen flex flex-col scan-line">
       <Header />
 
-      <div className="flex flex-1">
-        <div className="w-65 border-r app-border p-4">
-          <LogList logs={logs} onSelect={setActiveLog} />
+      <div className="flex flex-1 overflow-hidden">
+        <div className="w-72 border-r-2 app-border p-4 overflow-y-auto">
+          <div className="mb-3 text-xs app-text-dim">// LOG ARCHIVE</div>
+          <LogList logs={logs} onSelect={setActiveLog} activeLog={activeLog} />
         </div>
 
-        <div className="flex-1">
+        <div className="flex-1 overflow-hidden">
           <Editor activeLog={activeLog} refreshLogs={fetchLogs} />
         </div>
       </div>
