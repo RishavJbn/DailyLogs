@@ -1,1 +1,48 @@
 @import "tailwindcss";
+:root {
+  --bg: #000000;
+  --text: #e5e5e5;
+  --accent: #22c55e;
+  --border: #333;
+}
+
+/* blue mode */
+[data-theme="blue"] {
+  --bg: #0f172a;
+  --text: #e2e8f0;
+  --accent: #3b82f6;
+  --border: #334155;
+}
+
+/* light mode */
+[data-theme="light"] {
+  --bg: #fafafa;
+  --text: #111;
+  --accent: #000;
+  --border: #ddd;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: monospace;
+}
+.app-bg {
+  background: var(--bg);
+}
+
+.app-text {
+  color: var(--text);
+}
+
+.app-border {
+  border-color: var(--border);
+}
+
+.app-accent {
+  color: var(--accent);
+}
+
+.app-box {
+  border: 1px solid var(--border);
+}
