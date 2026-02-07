@@ -1,39 +1,32 @@
 import { useEffect, useState } from "react";
 import { setTheme } from "../utils/theme";
+import axios from "../api/axios";
+import { useNavigate } from "react-router-dom";
 
-export default function Header({ isLoggedIn, onLogout }) {
+export default function Header({ isLoggedIn }) {
   const [now, setNow] = useState(new Date());
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setNow(new Date());
-    }, 1000);
-
+    const interval = setInterval(() => setNow(new Date()), 1000);
     return () => clearInterval(interval);
   }, []);
 
-  const dateStr = now.toDateString();
-  const timeStr = now.toLocaleTimeString();
+  const handleLogout = async () => {
+    await axios.post("/users/logout");
+    navigate("/login");
+  };
 
   return (
-    <div className="app-box px-4 py-2 flex items-center justify-between text-sm">
-      {/* LEFT */}
+    <div className="app-box px-4 py-2 flex justify-between text-sm">
       <div className="app-accent">daily-logs</div>
 
-      {/* CENTER */}
       <div className="opacity-70">
-        {dateStr} · {timeStr}
+        {now.toDateString()} · {now.toLocaleTimeString()}
       </div>
 
-      {/* RIGHT */}
-      <div className="flex items-center gap-4">
-        {isLoggedIn ? (
-          <button onClick={onLogout} className="hover:opacity-70">
-            logout
-          </button>
-        ) : (
-          <span className="opacity-50">guest</span>
-        )}
+      <div className="flex gap-4 items-center">
+        {isLoggedIn && <button onClick={handleLogout}>logout</button>}
 
         <div className="flex gap-2 text-xs">
           <button onClick={() => setTheme("terminal")}>T</button>

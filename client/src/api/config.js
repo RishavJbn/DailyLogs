@@ -1,11 +1,11 @@
 import axios from "axios";
 
-const axiosInstance = axios.create({
+export const axiosLogs = axios.create({
   baseURL: "http://localhost:8000/api/v1/dailylog",
-//   withCredentials: true, // future auth-safe
-  headers: {
-    "Content-Type": "application/json",
-  },
+  withCredentials: true,
 });
 
-export default axiosInstance;
+export const axiosUsers = axios.create({
+  baseURL: "http://localhost:8000/api/v1/users",
+  withCredentials: true,
+});
