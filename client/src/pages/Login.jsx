@@ -37,17 +37,36 @@ export default function Login() {
 
   return (
     <div className="app-bg app-text h-screen flex items-center justify-center scan-line">
-      <div className="app-box p-8 w-[450px]">
-        <div className="terminal-title app-accent text-center mb-8">
-          ◈ SYSTEM LOGIN ◈
+      <div className="app-box p-8 w-[500px]">
+        {/* ASCII Art Header */}
+        <pre className="text-[8px] app-accent text-center mb-4 leading-tight">
+          {`
+ ████████╗███████╗ ██████╗██╗  ██╗    ██╗      ██████╗  ██████╗ ███████╗
+ ╚══██╔══╝██╔════╝██╔════╝██║  ██║    ██║     ██╔═══██╗██╔════╝ ██╔════╝
+    ██║   █████╗  ██║     ███████║    ██║     ██║   ██║██║  ███╗███████╗
+    ██║   ██╔══╝  ██║     ██╔══██║    ██║     ██║   ██║██║   ██║╚════██║
+    ██║   ███████╗╚██████╗██║  ██║    ███████╗╚██████╔╝╚██████╔╝███████║
+    ╚═╝   ╚══════╝ ╚═════╝╚═╝  ╚═╝    ╚══════╝ ╚═════╝  ╚═════╝ ╚══════╝
+`}
+        </pre>
+
+        <div className="terminal-title app-accent text-center mb-2">
+          ◈ AUTHENTICATION PROTOCOL ◈
+        </div>
+        <div className="text-center text-[10px] app-text-dim mb-6">
+          v2.0.1-alpha | BUILD 0x4A2F | PORT :8000 | SSL ENABLED
         </div>
 
-        {error && <div className="terminal-error mb-6">[ERROR] {error}</div>}
+        {error && (
+          <div className="terminal-error mb-6">[ERR_CODE: 0x401] {error}</div>
+        )}
 
         <div className="mb-6">
-          <div className="text-xs app-text-dim mb-1">// USERNAME OR EMAIL</div>
+          <div className="text-xs app-text-dim mb-1">
+            0x01 // INPUT: USERNAME || EMAIL
+          </div>
           <input
-            placeholder="username or email"
+            placeholder="root@techlog.sys"
             className="terminal-input w-full"
             onChange={(e) => setUsernameOrEmail(e.target.value)}
             autoComplete="username"
@@ -55,7 +74,9 @@ export default function Login() {
         </div>
 
         <div className="mb-8">
-          <div className="text-xs app-text-dim mb-1">// ENTER PASSWORD</div>
+          <div className="text-xs app-text-dim mb-1">
+            0x02 // INPUT: PASSWORD (SHA-256)
+          </div>
           <input
             type="password"
             placeholder="••••••••"
@@ -82,7 +103,10 @@ export default function Login() {
         </div>
 
         <div className="mt-8 text-center text-xs app-text-dim">
-          <div>█▓▒░ SECURE CONNECTION ACTIVE ░▒▓█</div>
+          <div>█▓▒░ AES-256 | TLS 1.3 | RSA-2048 ░▒▓█</div>
+          <div className="mt-2 text-[8px]">
+            STATUS: 0b01000001 | LATENCY: ~12ms | UPTIME: 99.9%
+          </div>
         </div>
       </div>
     </div>

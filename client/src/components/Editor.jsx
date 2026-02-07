@@ -224,11 +224,16 @@ export default function Editor({ activeLog, refreshLogs }) {
       </div>
 
       {/* Stats Bar */}
-      <div className="flex justify-between items-center mb-4 text-xs app-text-dim">
-        <div>
-          [ WORDS: {wordCount} | CHARS: {charCount} ]
+      <div className="flex justify-between items-center mb-4 text-xs app-text-dim border-t app-border pt-3">
+        <div className="flex gap-4">
+          <span>[ WORDS: {wordCount} ]</span>
+          <span>[ CHARS: {charCount} ]</span>
+          <span>[ BYTES: {new Blob([content]).size} ]</span>
         </div>
-        <div>{id && `[ ID: ${id.slice(-6)} ]`}</div>
+        <div className="flex gap-2">
+          {id && <span>[ 0x{id.slice(-6)} ]</span>}
+          <span className="app-accent">[ ✓ UTF-8 ]</span>
+        </div>
       </div>
 
       {/* Save Button */}
