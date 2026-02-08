@@ -52,10 +52,13 @@ export default function Home() {
   }, [isResizing]);
 
   return (
-    <div className="app-bg app-text h-screen flex flex-col scan-line">
+    <div className="app-bg app-text h-screen flex flex-col scan-line tv-screen crt-effect">
       <Header />
 
-      <div className="flex flex-1 overflow-hidden" onMouseMove={resize}>
+      <div
+        className="flex flex-1 overflow-hidden tv-flicker"
+        onMouseMove={resize}
+      >
         <div
           className="border-r-2 app-border p-4 overflow-y-auto"
           style={{ width: `${sidebarWidth}px` }}

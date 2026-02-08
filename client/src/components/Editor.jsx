@@ -218,8 +218,8 @@ export default function Editor({ activeLog, refreshLogs }) {
           value={content}
           onChange={(e) => setContent(e.target.value)}
           placeholder="> Start typing your log entry...\n> Supports markdown syntax\n> **bold** *italic* \`code\` ## heading"
-          className="flex-1 bg-transparent outline-none resize-none app-text terminal-prompt leading-relaxed"
-          style={{ fontFamily: "JetBrains Mono, monospace" }}
+          className="flex-1 bg-transparent outline-none resize-none app-text terminal-prompt leading-relaxed blinking-cursor"
+          style={{ fontFamily: "JetBrains Mono, monospace", fontSize: "18px" }}
         />
       </div>
 
