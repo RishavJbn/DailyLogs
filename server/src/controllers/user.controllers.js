@@ -7,7 +7,8 @@ import crypto from "crypto";
 
 const options = {
   httpOnly: true,
-  secure: true,
+  secure: process.env.NODE_ENV === "production",
+  sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
 };
 
 const generateAccessandRefreshTokens = async (userId) => {
@@ -39,7 +40,8 @@ const refreshAcessToken = asyncHandler(async (req, res) => {
   //compare karte hain incoming rt aur userid ka rt se db wala
   //phir rt aur at generate karte hain
   //iska main kab hai ki check karne rt ko aur iske baas new rt and at generate karwana
-  const incomingRefreshToken = req.body.refreshToken || req.cookie.refreshToken;
+  const incomingRefreshToken =
+    req.body.refreshToken || req.cookies.refreshToken;
 
   if (!incomingRefreshToken) {
     throw new ApiError(401, "unauthorized request ");
@@ -66,7 +68,7 @@ const refreshAcessToken = asyncHandler(async (req, res) => {
 
     return res
       .status(200)
-      .cookie("newrefreshToken", refreshToken, options)
+      .cookie("refreshToken", newrefreshToken, options)
       .cookie("accessToken", accessToken, options)
       .json(
         new ApiResponse(
@@ -163,11 +165,6 @@ const loginUser = asyncHandler(async (req, res) => {
   const loggedInUser = await User.findById(user._id).select(
     "-password -refreshToken",
   );
-
-  const options = {
-    httpOnly: true,
-    secure: true,
-  };
 
   return res
     .status(200)
